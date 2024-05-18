@@ -8,7 +8,7 @@
 namespace WolfDen133\NoConsoleSay;
 
 use pocketmine\command\Command;
-use pocketmine\console\ConsoleCommandSender;
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\plugin\PluginBase;
@@ -21,27 +21,27 @@ class Main extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
-    public function onCommandEvent (CommandEvent $event)
+    public function onCommandEvent(CommandEvent $event): void
     {
-        if ($event->getSender() instanceof ConsoleCommandSender) {
-            $cm = [];
+        $sender = $event->getSender();
+        if ($sender instanceof ConsoleCommandSender) {
+            $commandMap = $this->getServer()->getCommandMap();
+            $commands = $commandMap->getCommands();
+            $commandNames = array_map(function (Command $command) {
+                return $command->getName();
+            }, $commands);
 
-            foreach ($this->getServer()->getCommandMap()->getCommands() as $command) {
-                array_push($cm, $command->getName());
-            }
-
-            if (!array_search(explode(" ", $event->getCommand())[0], $cm)) {
-
+            $commandName = explode(" ", $event->getCommand())[0];
+            if (!in_array($commandName, $commandNames)) {
                 $event->cancel();
-
-                if ($this->getServer()->getCommandMap()->getCommand("say") instanceof Command) {
-                    $this->getServer()->dispatchCommand(new ConsoleCommandSender($this->getServer(), $this->getServer()->getLanguage()), "say " . $event->getCommand());
+                
+                if ($commandMap->getCommand("say") instanceof Command) {
+                    $commandMap->dispatch(new ConsoleCommandSender($this->getServer(), $this->getServer()->getLanguage()), "say " . $event->getCommand());
                     return;
                 }
 
                 $this->getServer()->broadcastMessage(TextFormat::LIGHT_PURPLE . "[Server] " . $event->getCommand());
             }
-
         }
     }
 }
