@@ -28,7 +28,7 @@ class Main extends PluginBase implements Listener {
 
                 if ($commandMap->getCommand("say") instanceof Command) {
                     $this->getServer()->dispatchCommand(
-                        new ConsoleCommandSender(Server::getInstance()),
+                        new ConsoleCommandSender($serverInstance, $senderName)),
                         "say " . $event->getCommand()
                     );
                     return;
