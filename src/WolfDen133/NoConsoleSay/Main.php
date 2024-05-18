@@ -3,7 +3,7 @@
 namespace WolfDen133\NoConsoleSay;
 
 use pocketmine\command\Command;
-use pocketmine\command\ConsoleCommandSender;
+use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\plugin\PluginBase;
