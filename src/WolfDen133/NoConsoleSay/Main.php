@@ -27,8 +27,11 @@ class Main extends PluginBase implements Listener {
                 $event->cancel();
 
                 if ($commandMap->getCommand("say") instanceof Command) {
+                    $server = Server::getInstance(); // Pobranie instancji serwera
+                    $senderName = "Console"; // Ustawienie nazwy nadawcy
+                    $consoleSender = new ConsoleCommandSender($server, $senderName); // Utworzenie nadawcy
                     $this->getServer()->dispatchCommand(
-                        new ConsoleCommandSender($serverInstance, $senderName)),
+                        $consoleSender,
                         "say " . $event->getCommand()
                     );
                     return;
