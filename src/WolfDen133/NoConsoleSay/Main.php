@@ -8,12 +8,11 @@ use pocketmine\event\Listener;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
-use pocketmine\lang\Language;
 use pocketmine\Server;
 
 class Main extends PluginBase implements Listener {
 
-    public function onEnable() :void
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
@@ -29,7 +28,7 @@ class Main extends PluginBase implements Listener {
 
                 if ($commandMap->getCommand("say") instanceof Command) {
                     $this->getServer()->dispatchCommand(
-                        new ConsoleCommandSender(Server::getInstance(), new Language("eng")),
+                        new ConsoleCommandSender(Server::getInstance()),
                         "say " . $event->getCommand()
                     );
                     return;
